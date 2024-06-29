@@ -1,24 +1,16 @@
 from http import HTTPStatus
 
-from fastapi.testclient import TestClient
 
-from fast_zero.app import app
-
-
-def test_root_deve_retornar_ok_e_ola_mundo():
+def test_root_deve_retornar_ok_e_ola_mundo(client):
     """Teste de Retorno"""
-    client = TestClient(app)
-
     response = client.get('/')
 
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {'message': 'Olá Mundo!'}
 
 
-def test_root_deve_retornar_ok_e_ola_mundo_html():
+def test_root_deve_retornar_ok_e_ola_mundo_html(client):
     """Teste de Retorno HTML"""
-    client = TestClient(app)
-
     response = client.get('/html/')
 
     assert response.status_code == HTTPStatus.OK
@@ -34,3 +26,21 @@ def test_root_deve_retornar_ok_e_ola_mundo_html():
       </body>
     </html>"""
     )
+
+
+def test_create_user(client):
+    """post - criação de usuário"""
+    response = client.post(
+        '/users/',
+        json={
+            'username': 'nata',
+            'email': 'nata@example.com',
+            'password': 'secret',
+        },
+    )
+    assert response.status_code == HTTPStatus.CREATED
+    assert response.json() == {
+        'username': 'nata',
+        'email': 'nata@example.com',
+        'id': 1,
+    }
