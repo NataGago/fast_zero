@@ -6,6 +6,7 @@ from fast_zero.app import app
 
 
 def test_root_deve_retornar_ok_e_ola_mundo():
+    """Teste de Retorno"""
     client = TestClient(app)
 
     response = client.get('/')
@@ -15,6 +16,7 @@ def test_root_deve_retornar_ok_e_ola_mundo():
 
 
 def test_root_deve_retornar_ok_e_ola_mundo_html():
+    """Teste de Retorno HTML"""
     client = TestClient(app)
 
     response = client.get('/html/')
