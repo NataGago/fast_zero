@@ -17,6 +17,7 @@ class UserSchema(BaseModel):
 
 class UserPublic(BaseModel):
     """Retorno do Usuário"""
+
     id: int
     username: str
     email: EmailStr
@@ -26,3 +27,9 @@ class UserDB(UserSchema):
     """ID do usuário no banco de dados"""
 
     id: int
+
+
+class UserList(BaseModel):
+    """Lista os usuários"""
+
+    users: list[UserPublic]
