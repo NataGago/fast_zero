@@ -17,8 +17,7 @@ def test_root_deve_retornar_ok_e_ola_mundo_html(client: TestClient):
 
     assert response.status_code == HTTPStatus.OK
     assert (
-        response.text
-        == """
+        response.text == """
     <html>
       <head>
         <title> Nosso olá mundo!</title>
@@ -82,9 +81,32 @@ def test_update_user(client: TestClient):
     }
 
 
+def test_update_user_fail(client: TestClient):
+    """Testa quando um usuário não é atualizado corretamente"""
+    response = client.put(
+        '/users/0',
+        json={
+            'username': 'bob',
+            'email': 'bob@example.com',
+            'password': 'mynewpassword',
+        },
+    )
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
+    assert response.json() == {'detail': 'User not found'}
+
+
 def test_delete_user(client: TestClient):
     """Testa a deleção de um usuário"""
     response = client.delete('/users/1')
 
     assert response.status_code == HTTPStatus.OK
     assert response.json() == {'message': 'User deleted'}
+
+
+def test_delete_user_fail(client: TestClient):
+    """Testa quando um usuário não pôde ser deletado"""
+    response = client.delete('/users/2')
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
+    assert response.json() == {'detail': 'User not found'}
