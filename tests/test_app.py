@@ -62,6 +62,26 @@ def test_read_users(client: TestClient):
     }
 
 
+def test_get_user(client: TestClient):
+    """Retorna um usuário"""
+    response = client.get('/users/1')
+
+    assert response.status_code == HTTPStatus.OK
+    assert response.json() == {
+        'username': 'nata',
+        'email': 'nata@example.com',
+        'id': 1,
+    }
+
+
+def test_get_user_fail(client: TestClient):
+    """Retorna um usuário"""
+    response = client.get('/users/0')
+
+    assert response.status_code == HTTPStatus.NOT_FOUND
+    assert response.json() == {'detail': 'User not found'}
+
+
 def test_update_user(client: TestClient):
     """Teste de atualizar um usuário"""
     response = client.put(
